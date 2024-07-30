@@ -951,3 +951,109 @@ class Solution:
                     return current_sum
         
         return closest_sum
+    
+
+# Q17.) Letter Combinations of a Phone Number
+
+# Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+
+# A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+
+# Example 1:
+
+# Input: digits = "23"
+# Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+# Example 2:
+
+# Input: digits = ""
+# Output: []
+# Example 3:
+
+# Input: digits = "2"
+# Output: ["a","b","c"]
+ 
+
+# Constraints:
+
+# 0 <= digits.length <= 4
+# digits[i] is a digit in the range ['2', '9'].
+
+# Sol_17}
+
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        if not digits:
+            return []
+
+        digit_mapping = {
+            '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl', 
+            '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'
+        }
+
+        combinations = []
+        self.backtrack(0, [], digits, digit_mapping, combinations)
+        return combinations
+
+    def backtrack(self, index: int, path: List[str], digits: str, letters: dict, combinations: List[str]):
+        if len(path) == len(digits):
+            combinations.append(''.join(path))
+            return
+        
+        possible_letters = letters[digits[index]]
+        
+        for letter in possible_letters:
+            
+            path.append(letter)
+            self.backtrack(index + 1, path, digits, letters, combinations)
+
+            path.pop()
+
+# Q18.) 4Sum
+
+# Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
+
+# 0 <= a, b, c, d < n
+# a, b, c, and d are distinct.
+# nums[a] + nums[b] + nums[c] + nums[d] == target
+# You may return the answer in any order.
+
+ 
+
+# Example 1:
+
+# Input: nums = [1,0,-1,0,-2,2], target = 0
+# Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+# Example 2:
+
+# Input: nums = [2,2,2,2,2], target = 8
+# Output: [[2,2,2,2]]
+ 
+
+# Constraints:
+
+# 1 <= nums.length <= 200
+# -109 <= nums[i] <= 109
+# -109 <= target <= 109
+
+# Sol_18}
+
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+        nums.sort()
+        n = len(nums)
+        ans = set()
+        for i in range(n):
+            for j in range(i+1, n):
+                l, r = j + 1, n - 1
+                remain = target - nums[i] - nums[j]
+                while l < r:
+                    if nums[l] + nums[r] == remain:
+                        ans.add((nums[i], nums[j], nums[l], nums[r]))
+                        l += 1
+                        r -= 1
+                    elif nums[l] + nums[r] > remain:
+                        r -= 1
+                    else:
+                        l += 1
+        return ans
