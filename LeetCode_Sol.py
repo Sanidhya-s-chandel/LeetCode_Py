@@ -1219,3 +1219,37 @@ class Solution:
             cur.next = list2
         
         return dummy.next       
+    
+# Q22.) Generate Parentheses
+
+# Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+# Example 1:
+
+# Input: n = 3
+# Output: ["((()))","(()())","(())()","()(())","()()()"]
+# Example 2:
+
+# Input: n = 1
+# Output: ["()"]
+ 
+# Constraints:
+
+# 1 <= n <= 8
+
+# Sol_22}
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        def backtrack(s="", openP=0, closeP=0):
+            if len(s) == 2 * n:
+                res.append(s)
+                return
+            if openP < n:
+                backtrack(s + "(", openP + 1, closeP)
+            if closeP < openP:
+                backtrack(s + ")", openP, closeP + 1)
+
+        res = []
+        backtrack()
+        return res     
