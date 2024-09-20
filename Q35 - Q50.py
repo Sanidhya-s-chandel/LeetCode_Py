@@ -436,3 +436,61 @@ class Solution:
 
         result_str = ''.join(map(str, result)).lstrip('0')
         return result_str or '0'
+    
+# Q44.) Wildcard Matching
+
+# Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*' where:
+
+# '?' Matches any single character.
+# '*' Matches any sequence of characters (including the empty sequence).
+# The matching should cover the entire input string (not partial).
+
+# Example 1:
+
+# Input: s = "aa", p = "a"
+# Output: false
+# Explanation: "a" does not match the entire string "aa".
+# Example 2:
+
+# Input: s = "aa", p = "*"
+# Output: true
+# Explanation: '*' matches any sequence.
+# Example 3:
+
+# Input: s = "cb", p = "?a"
+# Output: false
+# Explanation: '?' matches 'c', but the second letter is 'a', which does not match 'b'.
+ 
+# Constraints:
+
+# 0 <= s.length, p.length <= 2000
+# s contains only lowercase English letters.
+# p contains only lowercase English letters, '?' or '*'.
+
+# Sol_44}
+
+class Solution(object):
+    def isMatch(self, string, pattern):
+        first, second = 0, 0
+        length1, length2 = len(pattern), len(string)
+        star_index, match_index = -1, -1
+
+        while second < length2:
+            if first < length1 and (pattern[first] == string[second] or pattern[first] == '?'):
+                first += 1
+                second += 1
+            elif first < length1 and pattern[first] == '*':
+                star_index = first
+                match_index = second
+                first += 1
+            elif star_index != -1:
+                first = star_index + 1
+                match_index += 1
+                second = match_index
+            else:
+                return 0
+
+        while first < length1 and pattern[first] == '*':
+            first += 1
+
+        return int(first == length1)
