@@ -53,3 +53,62 @@ class Solution:
         lowerDiagonal = [0] * (2 * n - 1)
         self.solve(0, board, ans, leftrow, upperDiagonal, lowerDiagonal, n)
         return ans
+    
+# Q52.) N-Queens II
+
+# The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+
+# Given an integer n, return the number of distinct solutions to the n-queens puzzle.
+
+# Example 1:
+
+# Input: n = 4
+# Output: 2
+# Explanation: There are two distinct solutions to the 4-queens puzzle as shown.
+# Example 2:
+
+# Input: n = 1
+# Output: 1
+ 
+# Constraints:
+# 1 <= n <= 9
+
+# Sol_52}
+
+class Solution:
+    def totalNQueens(self, n: int) -> int:
+        if n == 1:
+            return 1
+        
+        def get_atack_map(i, j):
+            atack_map = {k: set() for k in range(i + 1, n)}
+            for ii in range(i + 1, n):
+                atack_map[ii].add(j)
+                
+            for shift in range(1, min(n - i, n - j)):
+                atack_map[i+shift].add(j + shift)
+            
+            for shift in range(1, min(j + 1, n - i)):
+                atack_map[i + shift].add(j - shift)
+            
+            return atack_map
+        
+        initial_set = set(range(n))
+        stack = [(0, {k: initial_set for k in range(n)})]
+        count = 0
+
+        while stack:
+            line, valid_map = stack.pop()
+            if line == n - 1: 
+                if valid_map[n - 1]:
+                    count += 1
+                else:
+                    continue
+            
+            else:
+                for pos in valid_map[line]:
+                    atack_map = get_atack_map(line, pos)
+                    valid_map_next = {k: valid_map[k] - atack_map[k]  for k in range(line + 1,n)}
+                    stack.append((line + 1, valid_map_next))
+        
+        return count 
