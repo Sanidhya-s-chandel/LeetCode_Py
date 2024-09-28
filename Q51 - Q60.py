@@ -386,3 +386,40 @@ class Solution:
             return 0
         
         return len(words[-1])
+
+# Q59.) Spiral Matrix II
+
+# Given a positive integer n, generate an n x n matrix filled with elements from 1 to n2 in spiral order.
+
+# Example 1:
+
+# Input: n = 3
+# Output: [[1,2,3],[8,9,4],[7,6,5]]
+# Example 2:
+
+# Input: n = 1
+# Output: [[1]]
+ 
+# Constraints:
+
+# 1 <= n <= 20
+
+# Sol_59}
+
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        arr = [[0] * n for _ in range(n)]
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)] 
+        x, y, direction = 0, 0, 0 
+        val = 1
+        
+        for _ in range(n * n):
+            arr[x][y] = val
+            val += 1
+            next_x, next_y = x + directions[direction][0], y + directions[direction][1]
+            if not (0 <= next_x < n and 0 <= next_y < n and arr[next_x][next_y] == 0):
+                direction = (direction + 1) % 4
+                next_x, next_y = x + directions[direction][0], y + directions[direction][1]
+            x, y = next_x, next_y
+        
+        return arr
