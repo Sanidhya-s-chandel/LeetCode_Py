@@ -165,3 +165,54 @@ class Solution:
             max_area = max(max_area, height * width)
         
         return max_area
+
+# Q85.) Maximal Rectangle
+
+# Given a rows x cols binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
+
+# Example 1:
+
+# Input: matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+# Output: 6
+# Explanation: The maximal rectangle is shown in the above picture.
+# Example 2:
+
+# Input: matrix = [["0"]]
+# Output: 0
+# Example 3:
+
+# Input: matrix = [["1"]]
+# Output: 1
+ 
+# Constraints:
+
+# rows == matrix.length
+# cols == matrix[i].length
+# 1 <= row, cols <= 200
+# matrix[i][j] is '0' or '1'.
+
+# Sol_85}
+
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        if not matrix or not matrix[0]:
+            return 0
+
+        r, c = len(matrix), len(matrix[0])
+        h = [0] * (c + 1)  # Extra space for boundary condition
+        maxArea = 0
+
+        for i in range(r):
+            st = [-1]
+            for j in range(c):
+                # Calculate height for current row
+                h[j] = h[j] + 1 if matrix[i][j] == '1' else 0
+
+            for j in range(c + 1):
+                while st[-1] != -1 and h[st[-1]] > h[j]:
+                    height = h[st.pop()]
+                    width = j - st[-1] - 1
+                    maxArea = max(maxArea, height * width)
+                st.append(j)
+
+        return maxArea
