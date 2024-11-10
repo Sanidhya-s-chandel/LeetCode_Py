@@ -34,3 +34,44 @@ class Solution:
         if not root:
             return True
         return self.isMirror(root.left, root.right)
+
+# Q102.) Binary Tree Level Order Traversal
+
+# Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).
+
+# Input: root = [3,9,20,null,null,15,7]
+# Output: [[3],[9,20],[15,7]]
+
+# Input: root = [1]
+# Output: [[1]]
+
+# Input: root = []
+# Output: []
+ 
+# Constraints:
+
+# The number of nodes in the tree is in the range [0, 2000].
+# -1000 <= Node.val <= 1000
+
+# Sol_102}
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        tree_q = deque()
+        ans = []
+        if root: tree_q.append(root)
+        while tree_q:
+            level_node_list = []
+            for i in range(len(tree_q)):
+                cur = tree_q.popleft()
+                level_node_list.append(cur.val)
+                if cur.left: tree_q.append(cur.left)
+                if cur.right: tree_q.append(cur.right)
+            if level_node_list: ans.append(level_node_list)
+        return ans
