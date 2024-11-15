@@ -232,7 +232,7 @@ class Solution:
 # inorder is guaranteed to be the inorder traversal of the tree.
 # postorder is guaranteed to be the postorder traversal of the tree.
 
-# Sol_107}
+# Sol_106}
 
 # Definition for a binary tree node.
 # class TreeNode:
