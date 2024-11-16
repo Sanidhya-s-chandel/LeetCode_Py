@@ -257,6 +257,50 @@ class Solution:
         
         return helper(0, len(inorder) - 1)
 
+# Q107.) Binary Tree Level Order Traversal II
+# Given the root of a binary tree, return the bottom-up level order traversal of its nodes' values. (i.e., from left to right, level by level from leaf to root).
+
+# Input: root = [3,9,20,null,null,15,7]
+# Output: [[15,7],[9,20],[3]]
+
+# Input: root = [1]
+# Output: [[1]]
+
+# Input: root = []
+# Output: []
+ 
+# Constraints:
+
+# The number of nodes in the tree is in the range [0, 2000].
+# -1000 <= Node.val <= 1000
+
+# Sol_107}
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
+        res = []
+        q = collections.deque()
+        q.append(root)
+        while q:
+            q_len = len(q)
+            level = []
+            for i in range(q_len):
+                node = q.popleft()
+                if node is not None:
+                    level.append(node.val)
+                    q.append(node.left)
+                    q.append(node.right)
+            if level:
+                res.append(level)
+
+        return res[::-1]
+
 # Q108.) Convert Sorted Array to Binary Search Tree
 
 # Given an integer array nums where the elements are sorted in ascending order, convert it to a 
