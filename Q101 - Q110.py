@@ -398,3 +398,45 @@ class Solution:
         root.left=self.sortedListToBST(head)
         root.right=self.sortedListToBST(mid.next)
         return root
+
+# Q110.) Balanced Binary Tree
+# Given a binary tree, determine if it is 
+# height-balanced
+
+# Input: root = [3,9,20,null,null,15,7]
+# Output: true
+
+# Input: root = [1,2,2,3,3,null,null,4,4]
+# Output: false
+
+# Input: root = []
+# Output: true
+ 
+# Constraints:
+
+# The number of nodes in the tree is in the range [0, 5000].
+# -104 <= Node.val <= 104
+
+# Sol_110}
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        def checkBalance(node):
+            if not node:
+                return True, 0
+            
+            left_balanced, left_height = checkBalance(node.left)
+            right_balanced, right_height = checkBalance(node.right)            
+            balanced = left_balanced and right_balanced and abs(left_height - right_height) <= 1
+           
+            height = max(left_height, right_height) + 1
+            return balanced, height
+        
+        balanced, _ = checkBalance(root)
+        return balanced       
