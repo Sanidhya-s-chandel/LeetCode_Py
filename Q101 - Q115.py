@@ -657,3 +657,54 @@ class Solution:
                 current.left = None
 
             current = current.right
+
+# Q115.) Distinct Subsequences
+# Given two strings s and t, return the number of distinct subsequences of s which equals t.
+
+# The test cases are generated so that the answer fits on a 32-bit signed integer.
+
+# Input: s = "rabbbit", t = "rabbit"
+# Output: 3
+# Explanation:
+# As shown below, there are 3 ways you can generate "rabbit" from s.
+# rabbbit
+# rabbbit
+# rabbbit
+
+# Input: s = "babgbag", t = "bag"
+# Output: 5
+# Explanation:
+# As shown below, there are 5 ways you can generate "bag" from s.
+# babgbag
+# babgbag
+# babgbag
+# babgbag
+# babgbag
+ 
+# Constraints:
+
+# 1 <= s.length, t.length <= 1000
+# s and t consist of English letters.
+
+# Sol_115}
+
+class Solution:
+    def numDistinct(self, s: str, t: str) -> int:
+        s2 = s
+        s1 = t
+        d = {}
+        for i in range(len(s1)):
+            if s1[i] in d:
+                d[s1[i]].append(i)
+            else:
+                d[s1[i]] = [i]
+        s = s2[::-1]
+        sumlst = [0 for j in range(len(s1))] 
+        for i in range(len(s2)):
+            if s[i] in d:
+                for idx in d[s[i]]:
+                    if idx == len(s1)-1:
+                        sumlst[idx] +=1
+                    else:
+                        sumlst[idx] += sumlst[idx+1]
+        return sumlst[0]
