@@ -836,3 +836,54 @@ class Solution:
         backtrack()
 
         return ans
+
+
+# Q 1079.) Letter Tile Possibilities
+# You have n  tiles, where each tile has one letter tiles[i] printed on it.
+
+# Return the number of possible non-empty sequences of letters you can make using the letters printed on those tiles.
+
+# Example 1:
+
+# Input: tiles = "AAB"
+# Output: 8
+# Explanation: The possible sequences are "A", "B", "AA", "AB", "BA", "AAB", "ABA", "BAA".
+# Example 2:
+
+# Input: tiles = "AAABBC"
+# Output: 188
+# Example 3:
+
+# Input: tiles = "V"
+# Output: 1
+
+# Constraints:
+
+# 1 <= tiles.length <= 7
+# tiles consists of uppercase English letters
+
+
+# Sol_1079 }
+
+class Solution:
+    def numTilePossibilities(self, tiles: str) -> int:
+        length = len(tiles)
+
+        # Count all tiles
+        count = [0] * 26
+        for tile in tiles:
+            count[ord(tile) - 65] += 1
+
+        result = set()
+        def backtrack(index: int, string: str) -> None:
+            if index == length:
+                result.add(string)
+                return
+            backtrack(index + 1, string)
+            for place in range(26):
+                if count[place]:
+                    count[place] -= 1
+                    backtrack(index + 1, string + chr(place + 65))
+                    count[place] += 1
+        backtrack(0, "")
+        return len(result) - 1
