@@ -736,3 +736,66 @@ class Solution:
         node.left = self.constructFromPrePost(preorder[1:i+2], postorder[:i+1])
         node.right = self.constructFromPrePost(preorder[i+2:], postorder[i+1:])
         return node
+
+# ====================================================================================================
+
+from collections import defaultdict, deque
+class TreeNode:
+    def __init__(self, key):
+        self.key = key
+        self.kids = [] 
+        self.parent = None
+
+class Solution:
+    def mostProfitablePath(self, edges: List[List[int]], bob: int, amount: List[int]) -> int:
+        graph = defaultdict(list)   	
+        for src, dst in edges:
+            graph[src].append(dst)
+            graph[dst].append(src)
+        
+        root = TreeNode(0)
+        queue = deque([root])  
+        visited = {0} 
+
+        while queue:
+            a_node = queue.popleft() 
+            if a_node.key == bob:
+                b_node = a_node
+            for kid in graph[a_node.key]:
+                if kid not in visited:
+                    visited.add(kid)
+                    kid_node = TreeNode(kid)
+                    kid_node.parent = a_node
+                    a_node.kids.append(kid_node)
+                    queue.append(kid_node)
+
+        max_alice_leaf_score = float('-inf') 
+
+        dq = deque([(root,0)])
+        while dq:
+            for _ in range(len(dq)):
+                a_node, score = dq.popleft() 
+                a_key = a_node.key 
+                a_amount = amount[a_key]
+
+                if b_node: 
+                    b_key = b_node.key 
+                    if a_key == b_key:
+                        a_amount /= 2
+
+                new_score = score + a_amount
+                amount[a_key] = 0
+
+                for kid in a_node.kids:
+                    dq.append((kid, new_score))
+                
+                if not a_node.kids:
+                    max_alice_leaf_score = max(max_alice_leaf_score, new_score)
+           
+            if b_node: 
+                b_key = b_node.key 
+                amount[b_key] = 0
+                b_node = b_node.parent 
+
+        
+        return int(max_alice_leaf_score)			
