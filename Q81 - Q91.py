@@ -821,3 +821,16 @@ class Solution:
                 even += 1
 
         return result
+
+# =======================================================================================
+
+import math
+class Solution:
+    def numOfSubarrays(self, arr: List[int]) -> int:
+        res = odd = even = 0
+        for i in arr:
+            even += 1
+            if i & 1:
+                odd, even = even, odd
+            res += odd
+        return res % (10**9 + 7)
