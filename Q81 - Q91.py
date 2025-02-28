@@ -851,3 +851,45 @@ class Solution:
             max_prefix_sum = max(max_prefix_sum, prefix_sum)
 
         return max_prefix_sum - min_prefix_sum
+
+# =========================================================================================
+
+class Solution:
+    def shortestCommonSupersequence(self, str1: str, str2: str) -> str:
+        n = len(str1)
+        m = len(str2)
+
+        dp = [[0]*(m+1) for _ in range(n+1)]
+        
+        for i in range(n-1, -1, -1):
+            for j in range(m-1, -1, -1):
+                if str1[i] == str2[j]:
+                    dp[i][j] = dp[i+1][j+1]+1
+                else:
+                    dp[i][j] = max(dp[i+1][j], dp[i][j+1])
+        
+        i = 0
+        j = 0
+        ans = ""
+
+        while i < n and j < m:
+            if str1[i] == str2[j]:
+                ans += str1[i]
+                i += 1
+                j += 1
+            elif dp[i+1][j] > dp[i][j+1]:
+                ans += str1[i]
+                i+=1
+            else:
+                ans += str2[j]
+                j+=1
+        
+        while i < n:
+            ans += str1[i]
+            i += 1
+        
+        while j < m:
+            ans += str2[j]
+            j += 1
+
+        return ans
