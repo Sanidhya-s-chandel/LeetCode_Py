@@ -941,3 +941,11 @@ class Solution:
                 temp.append(ans.pop())
                 ans.append(str(i + 2))
         return "".join(ans + temp[::-1])
+
+
+# ======================================================================================
+
+class Solution:
+    def mergeArrays(self, nums1: List[List[int]], nums2: List[List[int]]) -> List[List[int]]:
+        m = Counter(dict(nums1)) + Counter(dict(nums2))
+        return list(sorted(m.items()))
