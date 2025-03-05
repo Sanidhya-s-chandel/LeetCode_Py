@@ -977,3 +977,12 @@ class Solution:
             n //= 3
         
         return True
+
+# =================================================================================================
+
+class Solution:
+    def coloredCells(self, n: int) -> int:
+        cells = 1
+        for i in range(1, n+1):
+            cells += 4*i - 4
+        return cells
