@@ -1098,3 +1098,25 @@ class Solution:
             prev_prime = candidate
 
         return res
+
+# =========================================================================================
+
+class Solution:
+    def numberOfAlternatingGroups(self, colors: List[int], k: int) -> int:
+
+
+        n = len(colors)
+
+        colors = colors + [ colors[i] for i in range(k-1)]
+        length = len(colors)
+        l, r = 0, 1
+        res = 0
+        while r < length:
+            while r < length and colors[r] != colors[r-1]:
+                r+=1
+
+            if r - l + 1 >= k:
+                res += r - l - k + 1
+            l = r
+            r+=1
+        return res
