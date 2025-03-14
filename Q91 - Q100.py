@@ -1193,3 +1193,9 @@ class Solution(object):
                 high = mid - 1
 
         return low
+# =================================================================================================
+
+class Solution(object):
+    def maximumCandies(self, candies, k):
+        return bisect_left(range(1, sum(candies) // k + 1), True, key=lambda c: sum(x // c for x in candies) < k)
+        
