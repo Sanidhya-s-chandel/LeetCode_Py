@@ -1245,3 +1245,14 @@ class Solution(object):
             else:
                 l = mid + 1
         return l
+# ===================================================================================================
+
+class Solution:
+    def divideArray(self, nums: List[int]) -> bool:
+        counter=collections.Counter(nums)
+        #print(counter)
+        for count in counter.values():
+            if count%2 == 1: # if odd
+                return False
+        
+        return True
