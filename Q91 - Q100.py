@@ -1350,3 +1350,51 @@ class Solution:
                 result.append(minCost[uRoot])
 
         return result
+# ==================================================================================================================
+
+class UnionFind:
+    def __init__(self,n):
+        self.vals = [i for i in range(n)]
+    def union(self,val1,val2):
+        val1 = self.find(val1)
+        val2 = self.find(val2)
+        if val1!=val2:
+            if val1<val2:
+                self.vals[val2]=val1
+            else:
+                self.vals[val1]=val2        
+
+    def find(self,val):
+        if self.vals[val]==val:
+            return val
+        return self.find(self.vals[val])
+class Solution:
+    def minimumCost(self, n: int, edges: List[List[int]], query: List[List[int]]) -> List[int]:
+        uf = UnionFind(n)
+        for a,b,w in edges:
+            uf.union(a,b)
+
+        #want lookup table of AND for each set
+        tableAND = {}
+        for a,b,w in edges:
+            e = uf.find(a)
+            if e not in tableAND:
+                tableAND[e]=w
+            else:
+                tableAND[e]&=w
+
+        lookup = [0]*n
+        for i in range(n):
+            e = uf.find(i)
+            if i==e:
+                lookup[i]=e
+            else:
+                lookup[i]=lookup[e] #use ID of set if possible
+        answers = []
+        for s,t in query:
+            if lookup[s]==lookup[t]:
+                # answers.append(tableAND[uf.find(lookup[s])])
+                answers.append(tableAND[lookup[s]])
+            else:
+                answers.append(-1)
+        return answers
