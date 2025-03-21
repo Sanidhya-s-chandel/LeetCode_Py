@@ -1437,3 +1437,34 @@ class Solution(object):
                     queue.append(recipe)
 
         return result
+# =================================================================================================
+
+class Solution:
+    def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
+        # DFS approach
+        # First convert supplies to hashmap
+        suppliesHash = {x : True for x in supplies}
+        recipesToIndex = {recipes[i]: i for i in range(len(recipes))}
+        visited = set()
+        def dfs(index): # The index of the recipe
+            if recipes[index] in suppliesHash: return suppliesHash[recipes[index]]
+            
+            if index in visited: return False
+            visited.add(index)
+            for ingredient in ingredients[index]:
+                if ingredient in suppliesHash and suppliesHash[ingredient] == False:
+                    return False
+                if not ingredient in recipesToIndex and not ingredient in suppliesHash: return False
+                if not ingredient in suppliesHash and not dfs(recipesToIndex[ingredient]):
+                    suppliesHash[ingredient] = False
+                    return False
+
+            visited.remove(index)
+            suppliesHash[ingredient] = True
+            return True
+    
+        ans = []
+        for i in range(len(recipes)):
+            if dfs(i):
+                ans.append(recipes[i])
+        return ans
