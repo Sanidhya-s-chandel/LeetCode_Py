@@ -1753,3 +1753,45 @@ class Solution:
                 ans = ans * pow(x, k, mod) % mod
                 break
         return ans
+# ==================================================================================================
+class Solution:
+    def maximumScore(self, l: List[int], k: int) -> int:
+        mod = 1_000_000_007
+        ps = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311]
+
+        n = len(l)
+        d = dict.fromkeys(l)
+        for v in d:
+            cnt = 0
+            x = v
+            for p in ps:
+                if x == 1: break
+                q, r = divmod(x, p)
+                if r != 0: continue
+                cnt += 1
+                while r == 0:
+                    x = q
+                    q, r = divmod(x, p)
+            d[v] = cnt + (x != 1)
+
+        w = [0] * n
+        stk = []
+        pi, pv = -1, inf
+        for i, v in enumerate(map(d.__getitem__, l)):
+            while pv < v:
+                w[pi] *= i - pi
+                pi, pv = stk.pop()
+            w[i] = i - pi
+            stk.append((pi, pv))
+            pi, pv = i, v
+        for i, _ in reversed(stk):
+            w[pi] *= n - pi
+            pi = i
+        ans = 1
+        for v, x in sorted(zip(l, w), reverse=True):
+            if k > x:
+                k -= x
+                ans = ans * pow(v, x, mod) % mod
+            else:
+                return ans * pow(v, k, mod) % mod
+        return ans
