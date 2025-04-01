@@ -1808,3 +1808,14 @@ class Solution(object):
             if i < len(questions) - 1:
                 dp[i] = max(dp[i + 1], dp[i])
         return dp[0]
+# ============================================================================================
+class Solution:
+    def mostPoints(self, questions: List[List[int]]) -> int:
+        A, n = questions, len(questions)
+        d = [max(A[n-1][0], 0)]*n
+        for i in range(n-2, -1, -1):
+            if i+A[i][1] + 1 <= n-1:
+                d[i] = max(d[i+1], A[i][0] + d[i+A[i][1]+1])
+            else:
+                d[i] = max(d[i+1], A[i][0])
+        return d[0]
