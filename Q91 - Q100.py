@@ -1858,3 +1858,18 @@ class Solution:
                 diff = max(diff, maxi - nums[i])
                 
         return res
+# ===============================================================================================
+
+class Solution:
+    def maximumTripletValue(self, nums: List[int]) -> int:
+        prefix_max = 0
+        max_diff = 0
+        maximum_triplet_value = 0
+        for num in nums:
+            if max_diff * num > maximum_triplet_value:
+                maximum_triplet_value = max_diff * num
+            if prefix_max - num > max_diff:
+                max_diff = prefix_max - num
+            if num > prefix_max:
+                prefix_max = num
+        return maximum_triplet_value
