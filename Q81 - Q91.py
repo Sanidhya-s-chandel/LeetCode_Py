@@ -1142,3 +1142,48 @@ class Solution(object):
         # Start recursive DFS from the root at depth 0
         lca_node, _ = dfs(root, 0)
         return lca_node
+# =====================================================================================================
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def lcaDeepestLeaves(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        hashmap = {}
+        queue = [root]
+        leaves = []
+        while queue:
+            temp = []
+            for i in queue:
+                if i.left:
+                    hashmap[i.left] = i
+                    temp += [i.left]
+                if i.right:
+                    hashmap[i.right] = i
+                    temp += [i.right]
+            if temp == []:
+                leaves = queue
+            queue = temp
+            
+        n = len(leaves)
+            
+        if n == 1:
+            return leaves[0]
+        
+        ans = root
+            
+        while True:
+            flag = True
+            leaves[0] = hashmap[leaves[0]]
+            
+            for i in range(1, n):
+                leaves[i] = hashmap[leaves[i]]
+                if leaves[i] != leaves[i-1]:
+                    flag = False
+            if flag:
+                ans = leaves[0]
+                break
+                
+        return ans
