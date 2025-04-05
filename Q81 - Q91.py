@@ -1194,3 +1194,11 @@ class Solution:
         for num in nums:
             total |= num  # Step 1: Compute bitwise OR of all numbers
         return total * (1 << (len(nums) - 1))  # Step 2: Multiply by 2^(n-1)
+# ============================================================================================================
+class Solution:
+    def subsetXORSum(self, nums: List[int]) -> int:
+        xor_list = [0]
+        for i in nums:
+            for j in range(len(xor_list)):
+                xor_list.append(i^xor_list[j])
+        return sum(xor_list)
