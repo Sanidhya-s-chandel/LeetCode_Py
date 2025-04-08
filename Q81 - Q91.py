@@ -1310,3 +1310,32 @@ class Solution:
                 return i // 3 + 1
             seen.add(nums[i])
         return 0
+# ==========================================================================================
+class Solution:
+    def minimumOperations(self, nums: List[int]) -> int:
+
+        """
+        def check_unique(start):
+            seen = set()
+            for num in nums[start:]:
+                if num in seen:
+                    return False
+                seen.add(num)
+            return True
+
+        ans = 0
+        for i in range(0, len(nums), 3):
+            if check_unique(i):
+                return ans
+            ans += 1
+        return ans
+        """
+
+        seen = [False] * 128
+
+        for i in range(len(nums) - 1, -1, -1):
+            if seen[nums[i]]:
+                return i // 3 + 1
+            seen[nums[i]] = True
+
+        return 0
