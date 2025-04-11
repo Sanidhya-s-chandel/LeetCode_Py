@@ -1392,3 +1392,19 @@ class Solution:
                 count += 1  # ✅ Symmetry detected, add to mission count
 
         return count
+# =============================================================================================
+class Solution:
+    def countSymmetricIntegers(self, low: int, high: int) -> int:
+        ans=0
+        for i in range(low,high+1):
+            ss=str(i)
+            m=len(ss)
+            if m%2==0:
+                n=m//2
+                x1=0
+                x2=0
+                for i in range(n):
+                    x1+=ord(ss[i])-ord('0')
+                    x2+=ord(ss[i+n])-ord('0')
+                if x1==x2: ans+=1
+        return ans
