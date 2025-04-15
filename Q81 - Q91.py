@@ -1495,3 +1495,62 @@ class BIT:
             result += self.tree[index]
             index -= index & -index
         return result
+# ===============================================================================================
+class Solution:
+    # (merge) sort data and for each i, invcounts[data[i]] will be the number of 
+    # j < i s.t data[i] < data[j]
+    def sort_and_count_inversions(self, data : List[int], invcounts : List[int], start : int, end : int) -> List[int]:
+        n = end - start
+        if n <= 8:
+            # bubble sort
+            data_out = data[start:end]
+            invcounts_out = invcounts[start:end]
+            while 1 < n:
+                last_i = 0
+                for i in range(n - 1):
+                    if data_out[i+1] < data_out[i]:
+                        data_out[i], data_out[i+1] = data_out[i+1], data_out[i]
+                        invcounts_out[i], invcounts_out[i+1] = invcounts_out[i+1]+1, invcounts_out[i]         
+                        last_i = i + 1
+                n = last_i
+            return data_out, invcounts_out
+        # merge sort
+        m = start + n // 2
+        d1, c1 = self.sort_and_count_inversions(data, invcounts, start, m)
+        d2, c2 = self.sort_and_count_inversions(data, invcounts, m, end)
+        data_out : List(int) = []
+        invcounts_out : List(int) = []     
+        i1 = 0
+        i2 = 0
+        while i1 < len(d1) and i2 < len(d2):
+            if d1[i1] < d2[i2]:
+                data_out.append(d1[i1])
+                invcounts_out.append(c1[i1])
+                i1 += 1
+            else:
+                data_out.append(d2[i2])
+                invcounts_out.append(c2[i2] + len(d1) - i1)
+                i2 += 1
+        if i1 < len(d1):
+            data_out += d1[i1:]
+            invcounts_out += c1[i1:]
+        if i2 < len(d2):
+            data_out += d2[i2:]
+            invcounts_out += c2[i2:]
+        return data_out, invcounts_out
+
+    def goodTriplets(self, nums1: List[int], nums2: List[int]) -> int: 
+        n = len(nums1)
+        invnums1 = [0] * n
+        for i in range(n):
+            invnums1[nums1[i]] = i
+        nums = [invnums1[nums2[i]] for i in range(n)]
+        _, invcounts = self.sort_and_count_inversions(nums, [0] * n, 0, n)
+        res = 0
+        for i in range(n):
+            # number of j s.t. j < i and nums[j] < nums[i] 
+            under = i - invcounts[nums[i]]
+            # number of j s.t. i < j and nums[i] < nums[j] is equal to 
+            above = n - nums[i] - 1 - invcounts[nums[i]]
+            res += under * above       
+        return(res)
