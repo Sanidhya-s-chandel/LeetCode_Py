@@ -1603,3 +1603,17 @@ class Solution(object):
             maxi = max(maxi, sum)
             mini = min(mini, sum)
         return max(0, upper - lower - maxi + mini + 1)
+# =============================================================================================================
+class Solution:
+    def numberOfArrays(self, differences: List[int], lower: int, upper: int) -> int:
+        max_val = 0
+        min_val = 0
+        cum_sum = 0
+        for arr in differences:
+            cum_sum += arr
+            if cum_sum >= max_val:
+                max_val = cum_sum
+            if cum_sum <= min_val:
+                min_val = cum_sum
+
+        return max(0, (upper - lower) - (max_val - min_val) + 1)
