@@ -2113,3 +2113,59 @@ class Solution:
                 left += 1
                 
         return count
+# ========================================================================================================================
+import numpy as np
+
+class Solution:
+    def idealArrays(self, n: int, maxValue: int) -> int:
+        M = 1_000_000_007
+
+        primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+        cou = Counter([tuple()])
+        for v in range(2, maxValue+1):
+            exos = []
+            for p in primes:
+                e = 0
+                while v % p == 0:
+                    e += 1
+                    v //= p
+                if e:
+                    exos.append(e)
+                if v == 1:
+                    break
+            if v > 1:
+                exos.append(1)
+            cou[tuple(sorted(exos))] += 1
+
+        @lru_cache(None)
+        def gen_div_exos(t: Tuple[int]) -> Dict[Tuple[int], int]:
+            n = len(t)
+            if n == 0:
+                return {tuple(): 1}
+            prevdiv = gen_div_exos(t[:-1])
+            newdiv = Counter()
+            for v, f in prevdiv.items():
+                newdiv[v] += f
+                for e in range(1, t[-1]+1):
+                    newt = sorted(v + (e, ))
+                    newdiv[tuple(newt)] += f
+            return newdiv
+
+        vals, p = sorted(cou), len(cou)
+        corr = dict(zip(vals, range(p)))
+        A = np.zeros((p, p), int)
+        X = np.zeros((p, ), int)
+        for i, ti in enumerate(vals):
+            X[i] = cou[ti]
+            for tj, f in gen_div_exos(ti).items():
+                A[corr[tj]][i] = f
+ 
+        q, Ap, An = n-1, A, np.eye(p, dtype=int)
+        while q:
+            q, r = divmod(q, 2)
+            if r:
+                An = np.mod(np.matmul(Ap, An), M)
+            Ap = np.mod(np.matmul(Ap, Ap), M)
+
+        Y = np.mod(np.matmul(An, X), M)
+        return int(np.sum(Y)) % M
