@@ -2238,3 +2238,26 @@ class Solution(object):
             s += n % 10
             n //= 10
         return s
+# =================================================================================================================
+class Solution:
+    def countLargestGroup(self, n: int) -> int:
+
+        sum_of_digits = []
+        i = 0
+        while i <= n:
+            j = sum([int(d) for d in str(i)])
+            sum_of_digits.extend(range(j, j + 10))
+            i += 10
+        sum_of_digits = sum_of_digits[1:n + 1]
+
+        groups = dict()
+        for s in sum_of_digits:
+            groups[s] = groups.get(s, 0) + 1
+
+        max_group_size = max(groups.values())
+        count = 0
+        for v in groups.values():
+            if v == max_group_size:
+                count += 1
+        return count
+        
