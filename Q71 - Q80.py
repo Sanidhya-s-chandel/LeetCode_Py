@@ -642,3 +642,22 @@ class Solution:
             total += max(0, valid_start - last_invalid)
 
         return total
+# ============================================================================================================
+
+class Solution():
+
+    def countSubarrays(self, nums: List[int], minK: int, maxK: int) -> int:
+        out_of_bounds = (- 1)
+        last_min = (- 1)
+        last_max = (- 1)
+        result = 0
+        for (i, num) in enumerate(nums):
+            if ((num < minK) or (num > maxK)):
+                out_of_bounds = i
+            if (num == minK):
+                last_min = i
+            if (num == maxK):
+                last_max = i
+            if ((last_min > out_of_bounds) and (last_max > out_of_bounds)):
+                result += (min(last_min, last_max) - out_of_bounds)
+        return result
