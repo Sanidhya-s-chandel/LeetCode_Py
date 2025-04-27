@@ -1617,3 +1617,12 @@ class Solution:
                 min_val = cum_sum
 
         return max(0, (upper - lower) - (max_val - min_val) + 1)
+# ================================================================================================================
+
+class Solution(object):
+    def countSubarrays(self, nums):
+        count = 0
+        for i in range(len(nums)-2):
+            if 2*(nums[i]+nums[i+2]) == nums[i+1]:
+                count += 1
+        return count
