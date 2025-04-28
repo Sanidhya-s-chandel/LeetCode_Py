@@ -1651,3 +1651,26 @@ class Solution:
             count += right - left + 1
         
         return count
+# ======================================================================================================================
+class Solution:
+    def countSubarrays(self, nums: List[int], k: int) -> int:
+        l = len(nums)
+        i = 0
+        windowSum = 0
+        windowLen = 0
+        while i<l and (windowSum+nums[i])*(windowLen+1) < k:
+            windowSum += nums[i]
+            windowLen += 1
+            i += 1
+        res = (i*(i+1))//2
+        j = 0
+        while i<l:
+            windowSum += nums[i]
+            windowLen += 1
+            while windowSum*windowLen >= k:
+                windowSum -= nums[j]
+                windowLen -= 1
+                j += 1
+            res += i-j+1
+            i += 1
+        return res
