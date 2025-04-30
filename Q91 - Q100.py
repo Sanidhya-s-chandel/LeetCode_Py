@@ -2260,4 +2260,11 @@ class Solution:
             if v == max_group_size:
                 count += 1
         return count
-        
+# ====================================================================================================================
+class Solution:
+    def findNumbers(self, nums: List[int]) -> int:
+        ans = 0
+        for num in nums:
+            if not len(str(num)) % 2 :
+                ans += 1
+        return ans
