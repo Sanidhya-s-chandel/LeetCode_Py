@@ -701,3 +701,47 @@ class Solution(object):
                 res += 'R' * (span // 2) + '.' * (span % 2) + 'L' * (span // 2)
             prev = curr
         return res
+# =======================================================================================================================
+class Solution:
+    def pushDominoes(self, dominoes: str) -> str:
+        count = 0
+        ret = ''
+        last_pushed = None
+        
+        for d in dominoes:
+            if d == 'L':
+                if last_pushed == None:
+                    ret += 'L' * count
+                    last_pushed = 'L'
+                elif last_pushed == 'R':
+                    ret += 'R' * (count // 2)
+                    ret += '' if count % 2 == 0 else '.'
+                    ret += 'L' * (count // 2)
+                    last_pushed = None
+                else:
+                    ret += 'L' * count
+                    last_pushed = 'L'
+                count = 0
+                ret += 'L' 
+            elif d == 'R':
+                if last_pushed == None:
+                    ret += '.' * count
+                    last_pushed = 'R'
+                elif last_pushed == 'L':
+                    ret += '.' * count
+                    last_pushed = 'R'
+                else:
+                    ret += 'R' * count
+                    last_pushed = 'R'
+                ret += 'R'
+                count = 0
+            elif d == '.':
+                count += 1
+        if count > 0:
+            if last_pushed == None:
+                ret += count * '.'
+            elif last_pushed == 'L':
+                ret += count * '.'
+            else:
+                ret += count * 'R'
+        return ret
